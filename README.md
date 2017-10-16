@@ -1,9 +1,8 @@
 # treeAA(Tree_Align_Annotation)
 
 #### Sun Yat-sen University, Evolution and Genomics Function Lab, Chen&Yang Lab
-#### Author : Yuan Meng
+#### Author : Yang Jianrong, Yuan Meng
 #### Date : 2017-10-10
 
-This project is to present and visualize the results from dynamic tree blast algorithms:  
-1. Reconstruct the trees: treeS and treeT.
-2. Add the expression level of genes on the branches of the tree.
+This R package is to visualize the results from the dynamic tree blast algorithm which is developed by Pro.Yang,Jianrong in SYSU.
+It can add expression levels of genes from EPIC (http://epic.gs.washington.edu/) on the branches of trees blasting results.

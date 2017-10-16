@@ -1,5 +1,16 @@
 ggtree_result<-function(one_result,isprint=TRUE){
  
+  
+  
+  require("dplyr")
+  require("data.table")
+  require("rlist")
+  require("parallel")
+  require("ggplot2")
+  require("ggtree")
+  require("pipeR")
+  
+ 
   s2v<-function(x){
     unlist(strsplit(x,split=" "))
   }

@@ -8,6 +8,17 @@
 
 add_expr_to_tr<-function(expr_file,fun_alml_readin,result.nb){
   
+  require("dplyr")
+  require("data.table")
+  require("rlist")
+  require("parallel")
+  require("ggplot2")
+  require("ggtree")
+  
+  
+  
+  
+  
   add_expr_2_one_tr<-
     function(expr_file,fun_alml_readin,result.nb,SorT){
       
@@ -170,11 +181,4 @@ add_expr_to_tr<-function(expr_file,fun_alml_readin,result.nb){
   
  
 
-# ggtree(rtree(10))+geom_segment2(data=epic_gene_expr_simple[cell=="ABa"] %>% mutate(group="1"),
-#                                 aes(x=seg_x_start,xend=seg_x_end,y=seg_y,yend=seg_y,color=blot+10000))
-# ggplot()+geom_text(aes(x=seg_x_start,
-#                        y=seg_y,
-#                        group=group,
-#                        label=cell),
-#                    size=0.5,
-#                    data=epic_gene_expr_simple_na_rm %>% mutate(group="1"))
+

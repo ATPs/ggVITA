@@ -1,4 +1,4 @@
-# Tree_Align_Annotation
+# tree(Tree_Align_Annotation)
 
 #### Sun Yat-sen University, Evolution and Genomics Function Lab, Chen&Yang Lab
 #### Author : Yuan Meng

@@ -169,7 +169,7 @@ ggtree_result<-function(one_result,layout="rectangular",branch_size=0.2,tip_size
     ggtitle(paste0("result.nb:",one_result$the_result$num,"  ","score=",one_result$the_result$Score))
   ggT<-trT+
     scale_x_reverse()+
-    geom_tippoint(size=tip_szie,aes(fill=I(colorlabel)),shape=21,color="NA")+
+    geom_tippoint(size=tip_size,aes(fill=I(colorlabel)),shape=21,color="NA")+
     geom_tiplab(align = T,size=tiplab_size,hjust =1 )+
     ggtitle(paste0("RootS:",one_result$the_result$RootS,"  ","RootT:",one_result$the_result$RootT))
   

@@ -1,4 +1,4 @@
-ggtree_result<-function(one_result,isprint=TRUE){
+ggtree_result<-function(one_result,layout="rectangular",branch_size=0.2,tip_size=0.5,tiplab_size=0.1,isprint=TRUE){
  
   
   
@@ -18,10 +18,10 @@ ggtree_result<-function(one_result,isprint=TRUE){
   
   S_pruned<-filter(one_result$treeS$nodes_order,matched_or_pruned=="pruned")$node.order
   T_pruned<-filter(one_result$treeT$nodes_order,matched_or_pruned=="pruned")$node.order
+ 
   
-  my_layout="rectangular"
   
-  trS<-one_result$treeS$phylo_tr %>% groupOTU(focus=c(1)) %>% ggtree(aes(linetype=group),size=0.2,layout = my_layout,alpha=1)
+  trS<-one_result$treeS$phylo_tr %>% groupOTU(focus=c(1)) %>% ggtree(aes(linetype=group),size=branch_size,layout = my_layout,alpha=1)
   trS$data$group[T]<-0
 
   if(length(S_pruned)!=0){
@@ -29,7 +29,7 @@ ggtree_result<-function(one_result,isprint=TRUE){
   }
   
  
-  trT<-one_result$treeT$phylo_tr %>% groupOTU(focus=c(1)) %>% ggtree(aes(linetype=group),size=0.2,layout = my_layout,alpha=1)
+  trT<-one_result$treeT$phylo_tr %>% groupOTU(focus=c(1)) %>% ggtree(aes(linetype=group),size=branch_size,layout = my_layout,alpha=1)
   trT$data$group[T]<-0
   
   if(length(T_pruned)!=0){
@@ -164,13 +164,13 @@ ggtree_result<-function(one_result,isprint=TRUE){
   trT$data$colorlabel<-labellist2[trT$data$label]
   
   ggS<-trS+
-    geom_tippoint(size=0.1,aes(fill=I(colorlabel)),shape=21,color="NA")+
-    geom_tiplab(align = T,size=0.5)+
+    geom_tippoint(size=tip_size,aes(fill=I(colorlabel)),shape=21,color="NA")+
+    geom_tiplab(align = T,size=tiplab_size)+
     ggtitle(paste0("result.nb:",one_result$the_result$num,"  ","score=",one_result$the_result$Score))
   ggT<-trT+
     scale_x_reverse()+
-    geom_tippoint(size=0.1,aes(fill=I(colorlabel)),shape=21,color="NA")+
-    geom_tiplab(align = T,size=0.5,hjust =1 )+
+    geom_tippoint(size=tip_szie,aes(fill=I(colorlabel)),shape=21,color="NA")+
+    geom_tiplab(align = T,size=tiplab_size,hjust =1 )+
     ggtitle(paste0("RootS:",one_result$the_result$RootS,"  ","RootT:",one_result$the_result$RootT))
   
   if(isprint==T){multiplot(ggS,ggT,ncol = 2)}

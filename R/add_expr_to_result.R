@@ -41,7 +41,7 @@ add_expr_to_result<-function(expr_file,
         stop("c('cell','time','blot') not in colnames(the_gene_exprfile)!")
       }
       
-      epic_gene_expr$Lineage<-epic_gene_expr$cell %>% LN_2_trueLN(.)
+      epic_gene_expr$Lineage<-epic_gene_expr$cell %>% treeAA::LN_to_Bin(.)
       
       
       

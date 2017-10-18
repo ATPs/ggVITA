@@ -14,7 +14,15 @@ add_expr_to_result<-function(expr_file,
                              tip_size=0.5,
                              tiplab_size=0.5,
                              mc.cores=16,
-                             colors_gradient=c("#CC33FF","#6600FF","#3300FF","#006666","#33FF33","#66FF66","#FFCC00","#FF9900","#FF6600")){
+                             colors_gradient=c("#CC33FF",
+                                               "#6600FF",
+                                               "#3300FF",
+                                               "#006666",
+                                               "#33FF33",
+                                               "#66FF66",
+                                               "#FFCC00",
+                                               "#FF9900",
+                                               "#FF6600")){
   
   #require("dplyr")
   #require("data.table")
@@ -23,70 +31,32 @@ add_expr_to_result<-function(expr_file,
   #require("ggplot2")
   #require("ggtree")
   
-  
-  
-  
-  
-  add_expr_2_one_tr<-  function(expr_file,fun_alml_readin,result.nb,SorT){
-      
-      full_tr<-fun_alml_readin$result_list[[result.nb]]
-      
-      full_tr2<-ggtree_result(full_tr,isprint = F,branch_size=branch_size,tip_size=tip_size,tiplab_size=tiplab_size)
-      
       epic_gene_expr<-fread(expr_file)
-      
-      
-      
-      if(!all(c("cell","time","blot")%in% colnames(epic_gene_expr))){
-        stop("c('cell','time','blot') not in colnames(the_gene_exprfile)!")
-      }
-      
       epic_gene_expr$Lineage<-epic_gene_expr$cell %>% treeAA::LN_to_Bin(.)
-      
-      
-      
       epic_gene_expr_simple<-epic_gene_expr[,c("cell","time","blot","Lineage")]
       
-      
-      
-      full_tr_nodes_order<-
-        full_tr[[paste0("tree",SorT)]]$nodes_order %>% 
-        data.table()
-      
-      setnames(full_tr_nodes_order,"node.order","node")
-      
-      
-      full_tr_ggtree_data<-
-        full_tr2[[paste0("gg",SorT)]]$data %>% 
-        data.table()
-      
-      
-      full_tr_merge<-
-        merge(full_tr_ggtree_data,
-              full_tr_nodes_order[,c("parent.seq","parent.order","node.seq","node")],
-              by="node"
-        )
-      
-      
-      setkey(full_tr_merge,"node.seq")
-      
-      epic_gene_expr_simple$`node.x`<-
+      if(!all(c("cell","time","blot")%in% colnames(epic_gene_expr))){
+          stop("c('cell','time','blot') not in colnames(the_gene_exprfile)!")
+        }
+  
+      print("epic_gene_expr")
+  
+  
+  
+       epic_gene_expr_simple$node.x  <-
         epic_gene_expr_simple$Lineage %>% 
-        mclapply(function(x){
-          full_tr_merge[x]$`x`
+        mclapply(function(m){
+          full_tr_merge[m]$`x`
         },mc.cores = mc.cores) %>% 
         unlist()
       
-      require(parallel)
+      
       
       epic_gene_expr_simple$`parent.x`<-
         epic_gene_expr_simple$Lineage %>% 
-        mclapply(function(x){
-          
+        mclapply(function(m){
           tmp_parent_seq<-as.character(full_tr_merge[x]$`parent.seq`)
-          
-          full_tr_merge[tmp_parent_seq]$`x`
-          
+          full_tr_merge[tmp_parent_seq]$`x`                                #########################
         },mc.cores = mc.cores) %>%
         unlist()
       
@@ -131,10 +101,50 @@ add_expr_to_result<-function(expr_file,
         },mc.cores = mc.cores) %>% 
         unlist()
       
-      #epic_gene_expr_simple$`blot`[epic_gene_expr_simple$`blot`<0]<-0
+      
+      epic_gene_expr_simple$scale_blot<-with(epic_gene_expr_simple,scale(blot))
+  
+  
+  
+  
+  
+  
+      add_expr_2_one_tr<-function(fun_alml_readin,
+                                  result.nb,
+                                  SorT){
+          
+        full_tr<-fun_alml_readin$result_list[[result.nb]]
+      
+        full_tr2<- treeAA::ggtree_result(full_tr,
+                                         isprint = F,
+                                         branch_size=branch_size,
+                                         tip_size=tip_size,
+                                         tiplab_size=tiplab_size)
       
       
-      epic_gene_expr_simple$`scale_blot`<-with(epic_gene_expr_simple,scale(blot))
+        full_tr_nodes_order<-
+          full_tr[[paste0("tree",SorT)]]$nodes_order %>% 
+          data.table()
+      
+        setnames(full_tr_nodes_order,"node.order","node")
+      
+      
+        full_tr_ggtree_data<-
+          full_tr2[[paste0("gg",SorT)]]$data %>% 
+          data.table()
+      
+      
+        full_tr_merge<-
+          merge(full_tr_ggtree_data,
+                full_tr_nodes_order[,c("parent.seq","parent.order","node.seq","node")],
+                by="node"
+          )
+      
+      
+      setkey(full_tr_merge,"node.seq")
+      
+        
+ 
       
       
       

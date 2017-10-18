@@ -21,7 +21,7 @@ ggtree_result<-function(one_result,isprint=TRUE){
   
   my_layout="rectangular"
   
-  trS<-one_result$treeS$phylo_tr %>% groupOTU(focus=c(1)) %>% ggtree(aes(linetype=group),size=0.1,layout = my_layout,alpha=0.3)
+  trS<-one_result$treeS$phylo_tr %>% groupOTU(focus=c(1)) %>% ggtree(aes(linetype=group),size=0.2,layout = my_layout,alpha=1)
   trS$data$group[T]<-0
 
   if(length(S_pruned)!=0){
@@ -29,7 +29,7 @@ ggtree_result<-function(one_result,isprint=TRUE){
   }
   
  
-  trT<-one_result$treeT$phylo_tr %>% groupOTU(focus=c(1)) %>% ggtree(aes(linetype=group),size=0.1,layout = my_layout,alpha=0.3)
+  trT<-one_result$treeT$phylo_tr %>% groupOTU(focus=c(1)) %>% ggtree(aes(linetype=group),size=0.2,layout = my_layout,alpha=1)
   trT$data$group[T]<-0
   
   if(length(T_pruned)!=0){

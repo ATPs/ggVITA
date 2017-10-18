@@ -11,6 +11,7 @@ add_expr_to_result<-function(expr_file,
                              result.nb,
                              branch_size=0.5,
                              expr_size=0.5,
+                             expr_alpha=0.5,
                              tip_size=0.5,
                              tiplab_size=0.5,
                              mc.cores=16,
@@ -45,19 +46,17 @@ add_expr_to_result<-function(expr_file,
   
        epic_gene_expr_simple$node.x  <-
         epic_gene_expr_simple$Lineage %>% 
-        mclapply(function(m){
-          full_tr_merge[m]$`x`
-        },mc.cores = mc.cores) %>% 
+        mclapply(function(m) {full_tr_merge[m]$`x`} , mc.cores = mc.cores ) %>% 
         unlist()
       
       
       
       epic_gene_expr_simple$`parent.x`<-
-        epic_gene_expr_simple$Lineage %>% 
-        mclapply(function(m){
-          tmp_parent_seq<-as.character(full_tr_merge[x]$`parent.seq`)
-          full_tr_merge[tmp_parent_seq]$`x`                                #########################
-        },mc.cores = mc.cores) %>%
+        epic_gene_expr_simple$Lineage %>%
+        mclapply(function(m){tmp_parent_seq<-as.character(full_tr_merge[x]$`parent.seq`);
+                             full_tr_merge[tmp_parent_seq]$"x"
+                            },
+                 mc.cores = mc.cores) %>%
         unlist()
       
       epic_gene_expr_simple<-epic_gene_expr_simple %>% data.table()

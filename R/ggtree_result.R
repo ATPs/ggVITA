@@ -2,13 +2,13 @@ ggtree_result<-function(one_result,layout="rectangular",branch_size=0.2,tip_size
  
   
   
-  require("dplyr")
-  require("data.table")
-  require("rlist")
-  require("parallel")
-  require("ggplot2")
-  require("ggtree")
-  require("pipeR")
+  #require("dplyr")
+  #require("data.table")
+  #require("rlist")
+  #require("parallel")
+  #require("ggplot2")
+  #require("ggtree")
+  #require("pipeR")
   
  
   s2v<-function(x){

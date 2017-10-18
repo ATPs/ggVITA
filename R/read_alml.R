@@ -28,6 +28,8 @@ read_alml<-function(file=""){
     }
   }
   
+  
+  
   result2phylo <- function(the_result) {
     
     # transform a result(S and T) into 2 phylos
@@ -121,83 +123,17 @@ read_alml<-function(file=""){
       
       # @ make-up the tree
       
-      i = 1
-      
-      #the_seq<-s2v(fun.alml[[3]]$MatchS)
-      
-      the_outside_son <- get_outside_son(the_seq)
-      
-      the_outside_parent <- get_outside_parent(the_seq)
-      
-      the_outside_node <- union(the_outside_parent, the_outside_son)
-      
-      
-      
-      #print(paste0("outside parent: ", paste(the_outside_parent, collapse = " ")))
-      
-      #print(paste0("outside son: ", paste(the_outside_son, collapse = " ")))
-      
-      # print(paste0("son==parent: ", paste(
-      #   intersect(the_outside_parent, the_outside_son), collapse = " "
-      # )))
-      
-      
-      ##################
-      
-      the_seq <- c(the_seq, the_outside_node)
-      
-      ##################
-      
-      the_outside_son <- get_outside_son(the_seq)
-      
-      the_outside_parent <- get_outside_parent(the_seq)
-      
-      the_outside_node <- union(the_outside_parent, the_outside_son)
-      
-      
-      # 
-      # print(paste0("outside parent: ", paste(the_outside_parent, collapse = " ")))
-      # 
-      # print(paste0("outside son: ", paste(the_outside_son, collapse = " ")))
-      # 
-      # print(paste0("son==parent: ", paste(
-      #   intersect(the_outside_parent, the_outside_son), collapse = " "
-      # )))
-      
-      
-      
-      
-      
-      while (length(the_outside_parent) > 0 |
-             length(the_outside_son) > 0) {
-        i = i + 1
-        
-        #print(paste0("make-up times :", i))
+     
+      repeat{
         
         the_outside_son <- get_outside_son(the_seq)
         
         the_outside_parent <- get_outside_parent(the_seq)
         
         the_outside_node <- union(the_outside_parent, the_outside_son)
-        
-        
-        # print(paste0("the outside nodes:", paste(the_outside_node, collapse = " ")))
-        # 
-        # print(paste0("outside parent: ", paste(the_outside_parent, collapse = " ")))
-        # 
-        # print(paste0("outside son: ", paste(the_outside_son, collapse = " ")))
-        # 
-        # print(paste0("son==parent: ", paste(
-        #   intersect(the_outside_parent, the_outside_son),
-        #   collapse = " "
-        # )))
-        # 
-        ##################
-        
+     
         the_seq <- c(the_seq, the_outside_node)
-        
-        ##################
-        
+
         the_outside_son <- get_outside_son(the_seq)
         
         the_outside_parent <- get_outside_parent(the_seq)
@@ -205,16 +141,7 @@ read_alml<-function(file=""){
         the_outside_node <- union(the_outside_parent, the_outside_son)
         
         
-        
-        # print(paste0("outside parent: ", paste(the_outside_parent, collapse = " ")))
-        # 
-        # print(paste0("outside son: ", paste(the_outside_son, collapse = " ")))
-        # 
-        # print(paste0("son==parent: ", paste(
-        #   intersect(the_outside_parent, the_outside_son),
-        #   collapse = " "
-        # )))
-        
+        if( length(the_outside_parent) > 0 & length(the_outside_son) > 0 ){ break }
       }
       
       
@@ -325,6 +252,9 @@ read_alml<-function(file=""){
       nodes_order <-
         data.table(nodes_order[order(nodes_order$node.order), ])
       
+      
+      
+      
       # @ phylo
       
       phylo_tree <- list()
@@ -346,7 +276,14 @@ read_alml<-function(file=""){
     }## end tr2phylo function
     
     
+    
+    
+    
+    
+    
     #print("===Transforming S to phylo===")
+    
+    
     
     if(is.na(the_result$PruneS)==F){
       treeS<-tr2phylo(paste0(the_result$RootS," ",the_result$MatchS,the_result$PruneS),the_result$RootS)
@@ -367,6 +304,13 @@ read_alml<-function(file=""){
                                                         }
                                                         p_or_s
                                                       })))
+    
+    
+    
+    
+    
+    
+    
     
     #print("===Transforming T to phylo===")
     if(is.na(the_result$PruneT)==F){
@@ -389,12 +333,22 @@ read_alml<-function(file=""){
                                                         p_or_s
                                                       })))
     
+    
+    
+    
+    
     matched_pair<-data.table(mtS=s2v(paste0(the_result$RootS," ",the_result$MatchS)),mtT=s2v(paste0(the_result$RootT," ",the_result$MatchT)))
     
     
     return(list(treeS=treeS,treeT=treeT,matched_pair=matched_pair,the_result=the_result))
     
   }
+  
+  
+  
+  
+  
+  
   
   result_list<-lapply(the_result[1:(length(the_result)-1)],function(x){print(x$num);return(result2phylo(x))})
   final_result<-list(result_list=result_list,result_analysis=the_result[length(the_result)])

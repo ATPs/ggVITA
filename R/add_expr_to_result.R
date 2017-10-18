@@ -6,25 +6,32 @@
 
 #
 
-add_expr_to_tr<-function(expr_file,fun_alml_readin,result.nb){
+add_expr_to_result<-function(expr_file,
+                             fun_alml_readin,
+                             result.nb,
+                             branch_size=0.5,
+                             expr_size=0.5,
+                             tip_size=0.5,
+                             tiplab_size=0.5,
+                             mc.cores=16,
+                             colors_gradient=c("#CC33FF","#6600FF","#3300FF","#006666","#33FF33","#66FF66","#FFCC00","#FF9900","#FF6600")){
   
-  require("dplyr")
-  require("data.table")
-  require("rlist")
-  require("parallel")
-  require("ggplot2")
-  require("ggtree")
+  #require("dplyr")
+  #require("data.table")
+  #require("rlist")
+  #require("parallel")
+  #require("ggplot2")
+  #require("ggtree")
   
   
   
   
   
-  add_expr_2_one_tr<-
-    function(expr_file,fun_alml_readin,result.nb,SorT){
+  add_expr_2_one_tr<-  function(expr_file,fun_alml_readin,result.nb,SorT){
       
       full_tr<-fun_alml_readin$result_list[[result.nb]]
       
-      full_tr2<-ggtree_result(full_tr,isprint = F)
+      full_tr2<-ggtree_result(full_tr,isprint = F,branch_size=branch_size,tip_size=tip_size,tiplab_size=tiplab_size)
       
       epic_gene_expr<-fread(expr_file)
       
@@ -35,9 +42,6 @@ add_expr_to_tr<-function(expr_file,fun_alml_readin,result.nb){
       }
       
       epic_gene_expr$Lineage<-epic_gene_expr$cell %>% LN_2_trueLN(.)
-      
-      
-      
       
       
       
@@ -70,7 +74,7 @@ add_expr_to_tr<-function(expr_file,fun_alml_readin,result.nb){
         epic_gene_expr_simple$Lineage %>% 
         mclapply(function(x){
           full_tr_merge[x]$`x`
-        },mc.cores = 16) %>% 
+        },mc.cores = mc.cores) %>% 
         unlist()
       
       require(parallel)
@@ -83,7 +87,7 @@ add_expr_to_tr<-function(expr_file,fun_alml_readin,result.nb){
           
           full_tr_merge[tmp_parent_seq]$`x`
           
-        },mc.cores = 16) %>%
+        },mc.cores = mc.cores) %>%
         unlist()
       
       epic_gene_expr_simple<-epic_gene_expr_simple %>% data.table()
@@ -117,14 +121,14 @@ add_expr_to_tr<-function(expr_file,fun_alml_readin,result.nb){
         epic_gene_expr_simple$Lineage %>% 
         mclapply(function(x){
           full_tr_merge[x]$`y`
-        },mc.cores = 16) %>% 
+        },mc.cores = mc.cores) %>% 
         unlist()
       
       epic_gene_expr_simple$`branch`<-
         epic_gene_expr_simple$Lineage %>% 
         mclapply(function(x){
           full_tr_merge[x]$`branch`
-        },mc.cores = 16) %>% 
+        },mc.cores = mc.cores) %>% 
         unlist()
       
       #epic_gene_expr_simple$`blot`[epic_gene_expr_simple$`blot`<0]<-0
@@ -138,7 +142,8 @@ add_expr_to_tr<-function(expr_file,fun_alml_readin,result.nb){
         data.frame(node=epic_gene_expr_simple$node.x,epic_gene_expr_simple) %>% 
         filter(Lineage %in%  full_tr_merge$node.seq)
       
-      EPIC_colors_gradient<-c("#CC33FF","#6600FF","#3300FF","#006666","#33FF33","#66FF66","#FFCC00","#FF9900","#FF6600")
+      EPIC_colors_gradient<-colors_gradient
+    
       
       #EPIC_colors_gradient<-rainbow(4)
       
@@ -151,10 +156,10 @@ add_expr_to_tr<-function(expr_file,fun_alml_readin,result.nb){
                          group=group
         ),
         linetype="solid",
-        size=0.3,
+        size=expr_size,
         data=epic_gene_expr_simple_na_rm %>% mutate(group="1"))+
         scale_color_gradientn(colors =EPIC_colors_gradient)+
-        geom_tippoint(size=0.1,aes(fill=I(colorlabel)),shape=21,color="NA")
+        geom_tippoint(size=tip_size,aes(fill=I(colorlabel)),shape=21,color="NA")
       
       return(ggtr_anotaiton)
       

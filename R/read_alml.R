@@ -156,7 +156,7 @@ read_alml<-function(file=""){
         the_outside_node <- union(the_outside_parent, the_outside_son)
         
         
-        if( length(the_outside_parent) > 0 & length(the_outside_son) > 0 ){ break }
+        if( length(the_outside_parent) == 0 & length(the_outside_son) == 0 ){ break }
       }
       
       

@@ -34,3 +34,4 @@ Imports:
     rlist,
     parallel,
     pipeR
+Suggests:knitr (>= 0.1.0)

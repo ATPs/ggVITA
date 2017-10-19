@@ -188,9 +188,9 @@ add_expr_to_result<-function(expr_file,
   
   
   
-    ggS_ann<-add_expr_2_one_tr(expr_file,fun_alml_readin,result.nb,"S")
+    ggS_ann<-add_expr_2_one_tr(expr_file,fun_alml_readin,result.nb,SorT="S")
 
-    ggT_ann<-add_expr_2_one_tr(expr_file,fun_alml_readin,result.nb,"T")
+    ggT_ann<-add_expr_2_one_tr(expr_file,fun_alml_readin,result.nb,SorT="T")
   
     multiplot(ggS_ann,ggT_ann+scale_x_reverse(),ncol=2)
   

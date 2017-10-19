@@ -64,8 +64,8 @@ add_expr_to_result<-function(expr_file,
     #   think about the args passing to ggtree_result
     environment(ggtree_result)=environment()
     
-    
-    full_tr2<- ggtree_result(full_tr,
+    ggtree_result2<-ggtree_result
+    full_tr2<- ggtree_result2(full_tr,
                                      isprint = F,
                                      branch_size=branch_size,
                                      tip_size=tip_size,

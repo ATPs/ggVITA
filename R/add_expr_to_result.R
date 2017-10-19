@@ -24,7 +24,7 @@ add_expr_to_result<-function(expr_file,
                                                "#FFCC00",
                                                "#FF9900",
                                                "#FF6600"),
-                            col_names=c("cell","time","blot"){
+                            col_names=c("cell","time","blot")){
   
   #require("dplyr")
   #require("data.table")

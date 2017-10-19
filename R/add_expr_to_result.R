@@ -42,7 +42,8 @@ add_expr_to_result<-function(expr_file,
   
       
       epic_gene_expr$Lineage<-epic_gene_expr$cell %>% LN_to_Bin(.)
-      epic_gene_expr_simple<-epic_gene_expr[,c(col_names,"Lineage")]
+      col_names<-c(col_names,"Lineage")
+      epic_gene_expr_simple<-data.frame(epic_gene_expr)[,col_names] %>% data.table()
   
   
       

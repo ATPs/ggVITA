@@ -16,6 +16,8 @@ add_expr_2_one_tr<-function(expr_file,
   
   epic_gene_expr<-fread(expr_file)
   
+  head(epic_gen_expr)
+  
   
   if(!all(col_names%in% colnames(epic_gene_expr))){
     stop("col_names are not in colnames(the_gene_exprfile)!")
@@ -28,6 +30,7 @@ add_expr_2_one_tr<-function(expr_file,
   
   epic_gene_expr_simple<-data.frame(epic_gene_expr)[,col_names] %>% data.table()
   
+  head(epic_gen_expr_simple)
   
   #head(epic_gene_expr_simple)
   
@@ -70,23 +73,22 @@ add_expr_2_one_tr<-function(expr_file,
   
   setkey(full_tr_merge,"node.seq")
   
+  
+  head(full_tr_merge)
+  is.data.table(epic_gen_expr_simple)
   ############################################
   
   
-  epic_gene_expr_simple<-epic_gene_expr_simple %>% 
-    filter(Lineage %in%  full_tr_merge$node.seq)
+  epic_gene_expr_simple<-epic_gene_expr_simple %>% filter(Lineage %in%  full_tr_merge$node.seq)
   
   
-  epic_gene_expr_simple$"node.x"  <-epic_gene_expr_simple$Lineage %>% 
-    mclapply(function(m){full_tr_merge[full_tr_merge$node.seq==m,]$"x"},mc.cores = mc.cores) %>% 
-    unlist()
+  epic_gene_expr_simple$node.x  <-epic_gene_expr_simple$Lineage %>% mclapply(function(m){full_tr_merge[m]$"x"},mc.cores = mc.cores) %>% unlist()
   
   
   ##
-  epic_gene_expr_simple$"parent.x"<-
-    epic_gene_expr_simple$"Lineage" %>%
-    mclapply(function(m){
-      tmp_parent_seq<-as.character(full_tr_merge[node.seq==m,]$parent.seq)
+  epic_gene_expr_simple$parent.x<-
+    epic_gene_expr_simple$Lineage %>% mclapply(
+      function(m){tmp_parent_seq<-as.character(full_tr_merge[m]$parent.seq)
       full_tr_merge[node.seq==tmp_parent_seq,]$"x"
     },
     mc.cores = mc.cores) %>%
@@ -98,8 +100,7 @@ add_expr_2_one_tr<-function(expr_file,
   ##
   epic_gene_expr_simple_celltime_freq<-
     epic_gene_expr_simple[,"cell"] %>% 
-    table() %>% 
-    data.table()
+    table() %>% data.table()
   
   
   
@@ -110,6 +111,9 @@ add_expr_2_one_tr<-function(expr_file,
     merge(epic_gene_expr_simple,epic_gene_expr_simple_celltime_freq,by="cell") %>% data.table()
   
   ##
+  
+  is.data.table(epic_gen_expr_simple)
+  
   
   epic_gene_expr_simple$time_rank_in_cell<-epic_gene_expr_simple[,rank(time),by=cell]$V1
   
@@ -122,14 +126,14 @@ add_expr_2_one_tr<-function(expr_file,
   epic_gene_expr_simple<-mutate(epic_gene_expr_simple,seg_x_end=((time_rank_in_cell)/ time_freq)*(node.x-parent.x)+parent.x)
   
   
-  epic_gene_expr_simple$`seg_y`<-
+  epic_gene_expr_simple$seg_y<-
     epic_gene_expr_simple$Lineage %>% 
     mclapply(function(x){
       full_tr_merge[x]$`y`
     },mc.cores = mc.cores) %>% 
     unlist()
   
-  epic_gene_expr_simple$`branch`<-
+  epic_gene_expr_simple$branch<-
     epic_gene_expr_simple$Lineage %>% 
     mclapply(function(x){
       full_tr_merge[x]$`branch`

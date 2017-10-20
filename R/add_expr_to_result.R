@@ -23,8 +23,7 @@ add_expr_to_result<-function(expr_file,
                                                "#66FF66",
                                                "#FFCC00",
                                                "#FF9900",
-                                               "#FF6600"),
-                             col_names=c("cell","time","blot")){
+                                               "#FF6600")){
   
   #require("dplyr")
   #require("data.table")
@@ -47,8 +46,7 @@ add_expr_to_result<-function(expr_file,
                              tip_size=tip_size,
                              tiplab_size=tiplab_size,
                              mc.cores=mc.cores,
-                             colors_gradient=colors_gradient,
-                             col_names= col_names)
+                             colors_gradient=colors_gradient)
   
   ggT_ann<-add_expr_2_one_tr(expr_file,
                              fun_alml_readin,
@@ -60,8 +58,7 @@ add_expr_to_result<-function(expr_file,
                              tip_size=tip_size,
                              tiplab_size=tiplab_size,
                              mc.cores=mc.cores,
-                             colors_gradient=colors_gradient,
-                             col_names= col_names)
+                             colors_gradient=colors_gradient)
   
   multiplot(ggS_ann,ggT_ann+scale_x_reverse(),ncol=2)
   

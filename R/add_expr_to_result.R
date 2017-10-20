@@ -57,6 +57,12 @@ add_expr_to_result<-function(expr_file,
                               result.nb,
                               SorT){
     
+    fun_alml_readin<-get(fun_alml_readin,parent.frame())
+    
+    result.nb<-get(result.nb,parent.frame())
+    
+    epic_gene_expr_simple<-get(epic_gene_expr_simple,parent.frame())
+    
     full_tr<-fun_alml_readin$result_list[[result.nb]]
     
     
@@ -66,15 +72,17 @@ add_expr_to_result<-function(expr_file,
     
     ggtree_result2<-ggtree_result
    
-    print(environment())
-    environment(ggtree_result2)<-environment()
+    #print(environment())
+    attr(ggtree_result2,)<-environment()
+    
+    
+   
     
     full_tr2<- ggtree_result2(full_tr,
                                      isprint = F,
                                      branch_size=branch_size,
                                      tip_size=tip_size,
                                      tiplab_size=tiplab_size)
-    
     
     full_tr_nodes_order<-
       full_tr[[paste0("tree",SorT)]]$nodes_order %>% 

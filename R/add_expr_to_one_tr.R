@@ -16,9 +16,6 @@ add_expr_2_one_tr<-function(expr_file,
   
   epic_gene_expr<-fread(expr_file)
   
-  head(epic_gene_expr)
-  
-  
   if(!all(col_names%in% colnames(epic_gene_expr))){
     stop("col_names are not in colnames(the_gene_exprfile)!")
   }
@@ -30,19 +27,7 @@ add_expr_2_one_tr<-function(expr_file,
   
   epic_gene_expr_simple<-data.frame(epic_gene_expr)[,col_names] %>% data.table()
   
-  head(epic_gene_expr_simple)
-  
-  #head(epic_gene_expr_simple)
-  
-  full_tr<-fun_alml_readin$result_list[[result.nb]]
-  
-  
-  
-  
-  
-  
-  ####################################################
-  
+  full_tr<-fun_alml_readin$result_list[[result.nb]]  
   
   full_tr2<- ggtree_result(full_tr,
                            isprint = F,
@@ -115,7 +100,7 @@ add_expr_2_one_tr<-function(expr_file,
   is.data.table(epic_gene_expr_simple)
   
   
-  epic_gene_expr_simple$time_rank_in_cell<-epic_gene_expr_simple[,rank(time),by=cell]$V1
+  epic_gene_expr_simple$time_rank_in_cell<-epic_gene_expr_simple[,frank(time),by=cell]$V1
   
 
   print(epic_gene_expr_simple$time_rank_in_cell)
@@ -129,14 +114,14 @@ add_expr_2_one_tr<-function(expr_file,
   epic_gene_expr_simple$seg_y<-
     epic_gene_expr_simple$Lineage %>% 
     mclapply(function(x){
-      full_tr_merge[x]$`y`
+      full_tr_merge[x]$y
     },mc.cores = mc.cores) %>% 
     unlist()
   
   epic_gene_expr_simple$branch<-
     epic_gene_expr_simple$Lineage %>% 
     mclapply(function(x){
-      full_tr_merge[x]$`branch`
+      full_tr_merge[x]$branch
     },mc.cores = mc.cores) %>% 
     unlist()
   
@@ -144,6 +129,14 @@ add_expr_2_one_tr<-function(expr_file,
   epic_gene_expr_simple$scale_blot<-scale(epic_gene_expr_simple$blot)
   
 
+  
+  
+  
+  
+  
+  
+  
+  
   EPIC_colors_gradient<-colors_gradient
   
   ggtr_anotation<-full_tr2[[paste0("gg",SorT)]]+

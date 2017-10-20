@@ -1,6 +1,6 @@
 add_expr_2_one_tr<-function(expr_file,
                             fun_alml_readin,
-                            result.nb,
+                            result_nb,
                             SorT,
                             branch_size=branch_size,
                             expr_size=expr_size,
@@ -8,28 +8,33 @@ add_expr_2_one_tr<-function(expr_file,
                             tip_size=tip_size,
                             tiplab_size=tiplab_size,
                             mc.cores=mc.cores,
-                            colors_gradient=colors_gradient,
-                            col_names= col_names
+                            colors_gradient=colors_gradient
 ){
   
+  require(data.table)
+  require(dplyr)
+  
+  ## read in the expression file and pick up the colmuns: cell, time, blot
   
   
-  epic_gene_expr<-fread(expr_file)
+  epic_gene_expr <- fread(expr_file)
   
-  if(!all(col_names%in% colnames(epic_gene_expr))){
+  if(!all(c("cell","time","blot") %in% colnames(epic_gene_expr))){
     stop("col_names are not in colnames(the_gene_exprfile)!")
   }
   
   
   epic_gene_expr$Lineage<-epic_gene_expr$cell %>% ggVITA::LN_to_Bin(.)
   
-  col_names<-c(col_names,"Lineage")
+  col_names<-c("cell","time","blot","Lineage")
   
   epic_gene_expr_simple<-data.frame(epic_gene_expr)[,col_names] %>% data.table()
   
   
   
-  full_tr<-fun_alml_readin$result_list[[result.nb]]  
+  ## tree structure and position info ~~~link to lineage info
+  
+  full_tr<-fun_alml_readin$result_list[[result_nb]]  
   
   full_tr2<- ggtree_result(full_tr,
                            isprint = F,
@@ -37,18 +42,16 @@ add_expr_2_one_tr<-function(expr_file,
                            tip_size=tip_size,
                            tiplab_size=tiplab_size)
   
-  
-  
-  
-  
+ 
   full_tr_nodes_order<-
     full_tr[[paste0("tree",SorT)]]$nodes_order %>% 
     data.table()
+ 
   
   setnames(full_tr_nodes_order,"node.order","node")
   
   
-  full_tr_ggtree_data<-full_tr2[[paste0("gg",SorT)]]$data %>% data.table()
+  full_tr_ggtree_data<-full_tr2[[paste0("gg",SorT)]]$data
   
   
   
@@ -56,19 +59,19 @@ add_expr_2_one_tr<-function(expr_file,
     merge(full_tr_ggtree_data,
           full_tr_nodes_order[,c("parent.seq","parent.order","node.seq","node")],
           by="node"
-    )
+    ) %>% data.table()
   
   setkey(full_tr_merge,"node.seq")
   
   
-  
-  ############################################
+  ## find each expr data its "node.x","parent.x","seg_x_start","seg_x_end","seg_y"
   
   
   epic_gene_expr_simple<-epic_gene_expr_simple %>% filter(Lineage %in%  full_tr_merge$node.seq)
   
   
-  epic_gene_expr_simple$node.x  <-epic_gene_expr_simple$Lineage %>% mclapply(function(m){full_tr_merge[m]$"x"},mc.cores = mc.cores) %>% unlist()
+  epic_gene_expr_simple$node.x  <-epic_gene_expr_simple$Lineage %>% 
+        mclapply(function(m){full_tr_merge[m]$"x"},mc.cores = mc.cores) %>% unlist()
   
   
   ##
@@ -80,10 +83,10 @@ add_expr_2_one_tr<-function(expr_file,
     mc.cores = mc.cores) %>%
     unlist()
   
-  ##
-  epic_gene_expr_simple<-epic_gene_expr_simple %>% data.table()
   
-  ##
+  
+  
+  ## add cell time freq
   epic_gene_expr_simple_celltime_freq<-
     epic_gene_expr_simple[,"cell"] %>% 
     table() %>% data.table()
@@ -92,17 +95,25 @@ add_expr_2_one_tr<-function(expr_file,
   
   setnames(epic_gene_expr_simple_celltime_freq,c(".","N"),c("cell","time_freq"))
   
-  ##
+  
   epic_gene_expr_simple<-
-    merge(epic_gene_expr_simple,epic_gene_expr_simple_celltime_freq,by="cell") %>% data.table()
+    merge(epic_gene_expr_simple,epic_gene_expr_simple_celltime_freq,by="cell")
   
   ##
+  get_rank<-function(x){
+    the_subset<-filter(epic_gene_expr_simple,cell==as.character(x$cell))%>%arrange(time)
+    rank(the_subset)[the_subset$time==x$time]
+  }
   
   
+   epic_gene_expr_simple$time_rank_in_cell<-apply(epic_gene_expr_simple,1,get_rank)
   
+
   
  
-  epic_gene_expr_simpe$time_rank_in_cell<-epic_gene_expr_simple[,rank(as.numeric(time)),by=cell]$V1
+  epic_gene_expr_simple$time_rank_in_cell<-epic_gene_expr_simple%>%lapply(function(x){
+    the_subset<-epic_gene_expr_simple%>%filter(cell==x$cell)%>%arrange(
+    
 
   epic_gene_expr_simple$node.x<-as.numeric(epic_gene_expr_simple$node.x)
   

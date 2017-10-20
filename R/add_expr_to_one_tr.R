@@ -111,7 +111,7 @@ add_expr_2_one_tr<-function(expr_file,
   
   ##
   
-  epic_gene_expr_simple<-epic_gene_expr_simple[,time_rank_in_cell:=rank(time),by=cell]
+  epic_gene_expr_simple$time_rank_in_cell<-epic_gene_expr_simple[,rank(time),by=cell]$V1
   
 
   print(epic_gene_expr_simple$time_rank_in_cell)

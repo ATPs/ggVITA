@@ -16,7 +16,7 @@ add_expr_2_one_tr<-function(expr_file,
   
   epic_gene_expr<-fread(expr_file)
   
-  head(epic_gen_expr)
+  head(epic_gene_expr)
   
   
   if(!all(col_names%in% colnames(epic_gene_expr))){

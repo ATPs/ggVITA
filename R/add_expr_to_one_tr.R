@@ -75,7 +75,7 @@ add_expr_2_one_tr<-function(expr_file,
   
   
   head(full_tr_merge)
-  is.data.table(epic_gen_expr_simple)
+  is.data.table(epic_gene_expr_simple)
   ############################################
   
   

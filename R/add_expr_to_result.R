@@ -53,27 +53,24 @@ add_expr_to_result<-function(expr_file,
   
   
   
-  add_expr_2_one_tr<-function(fun_alml_readin,
-                              result.nb,
+  add_expr_2_one_tr<-function(fun_alml_readin2,
+                              result.nb2,
                               SorT){
     
-    fun_alml_readin<-get(fun_alml_readin,parent.frame())
+    #fun_alml_readin<-get(fun_alml_readin2,parent.frame())
     
-    result.nb<-get(result.nb,parent.frame())
+    #result.nb<-get(result.nb,parent.frame())
     
     epic_gene_expr_simple<-get(epic_gene_expr_simple,parent.frame())
     
-    full_tr<-fun_alml_readin$result_list[[result.nb]]
+    full_tr<-fun_alml_readin2$result_list[[result.nb2]]
     
     
     
     #   think about the args passing to ggtree_result
     #  environment(ggtree_result)=environment()
     
-    ggtree_result2<-ggtree_result
-   
-    #print(environment())
-    attr(ggtree_result2,)<-environment()
+    
     
     
    

@@ -59,8 +59,7 @@ add_expr_2_one_tr<-function(expr_file,
   setkey(full_tr_merge,"node.seq")
   
   
-  head(full_tr_merge)
-  is.data.table(epic_gene_expr_simple)
+  
   ############################################
   
   
@@ -97,13 +96,13 @@ add_expr_2_one_tr<-function(expr_file,
   
   ##
   
-  is.data.table(epic_gene_expr_simple)
+  
   
   
   epic_gene_expr_simple$time_rank_in_cell<-epic_gene_expr_simple[,frank(time),by=cell]$V1
   
 
-  print(epic_gene_expr_simple$time_rank_in_cell)
+  
   
   epic_gene_expr_simple<-mutate(epic_gene_expr_simple,seg_x_start=((time_rank_in_cell-1)/ time_freq)*(node.x-parent.x)+parent.x)
   

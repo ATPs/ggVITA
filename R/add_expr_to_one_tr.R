@@ -27,6 +27,9 @@ add_expr_2_one_tr<-function(expr_file,
   
   epic_gene_expr_simple<-data.frame(epic_gene_expr)[,col_names] %>% data.table()
   
+  epic_gene_expr_simpe$time_rank_in_cell<-epic_gene_expr_simple[,rank(time),by=cell]$V1
+  
+  
   full_tr<-fun_alml_readin$result_list[[result.nb]]  
   
   full_tr2<- ggtree_result(full_tr,
@@ -99,7 +102,7 @@ add_expr_2_one_tr<-function(expr_file,
   
   
   
-  epic_gene_expr_simple$time_rank_in_cell<-epic_gene_expr_simple[,frank(time),by=cell]$V1
+ 
   
 
   

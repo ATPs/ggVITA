@@ -103,12 +103,7 @@ add_expr_2_one_tr<-function(expr_file,
   
   
    epic_gene_expr_simple$time_rank_in_cell<-epic_gene_expr_simple[,rank(time),by=cell]$V1
-  
-
-  
  
-  epic_gene_expr_simple$time_rank_in_cell<-epic_gene_expr_simple%>%lapply(function(x){
-    the_subset<-epic_gene_expr_simple%>%filter(cell==x$cell)%>%arrange(
     
 
   epic_gene_expr_simple$node.x<-as.numeric(epic_gene_expr_simple$node.x)

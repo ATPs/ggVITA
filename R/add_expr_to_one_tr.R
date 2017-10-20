@@ -29,7 +29,7 @@ add_expr_2_one_tr<-function(expr_file,
   epic_gene_expr_simple<-data.frame(epic_gene_expr)[,col_names] %>% data.table()
   
   
-  head(epic_gene_expr_simple)
+  #head(epic_gene_expr_simple)
   
   full_tr<-fun_alml_readin$result_list[[result.nb]]
   

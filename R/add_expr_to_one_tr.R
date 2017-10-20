@@ -11,8 +11,7 @@ add_expr_2_one_tr<-function(expr_file,
                             colors_gradient=colors_gradient
 ){
   
-  require(data.table)
-  require(dplyr)
+  
   
   ## read in the expression file and pick up the colmuns: cell, time, blot
   
@@ -28,7 +27,7 @@ add_expr_2_one_tr<-function(expr_file,
   
   col_names<-c("cell","time","blot","Lineage")
   
-  epic_gene_expr_simple<-data.frame(epic_gene_expr)[,col_names] %>% data.table()
+  epic_gene_expr_simple<-epic_gene_expr[,col_names]
   
   
   
@@ -106,7 +105,7 @@ add_expr_2_one_tr<-function(expr_file,
   }
   
   
-   epic_gene_expr_simple$time_rank_in_cell<-apply(epic_gene_expr_simple,1,get_rank)
+   epic_gene_expr_simple$time_rank_in_cell<-epic_gene_expr_simple[,rank(time),by=cell]$V1
   
 
   

@@ -10,13 +10,13 @@ add_expr_2_one_tr<-function(expr_file,
                             mc.cores=mc.cores,
                             colors_gradient=colors_gradient,
                             col_names= col_names
-                            ){
+){
   
   
   
   epic_gene_expr<-fread(expr_file)
   
-
+  
   if(!all(col_names%in% colnames(epic_gene_expr))){
     stop("col_names are not in colnames(the_gene_exprfile)!")
   }
@@ -77,8 +77,7 @@ add_expr_2_one_tr<-function(expr_file,
     filter(Lineage %in%  full_tr_merge$node.seq)
   
   
-  epic_gene_expr_simple$"node.x"  <-
-    epic_gene_expr_simple$Lineage %>% 
+  epic_gene_expr_simple$"node.x"  <-epic_gene_expr_simple$Lineage %>% 
     mclapply(function(m){full_tr_merge[full_tr_merge$node.seq==m,]$"x"},mc.cores = mc.cores) %>% 
     unlist()
   
@@ -86,8 +85,9 @@ add_expr_2_one_tr<-function(expr_file,
   ##
   epic_gene_expr_simple$"parent.x"<-
     epic_gene_expr_simple$"Lineage" %>%
-    mclapply(function(m){tmp_parent_seq<-as.character(full_tr_merge[node.seq==m,]$`parent.seq`);
-    full_tr_merge[node.seq==tmp_parent_seq,]$"x"
+    mclapply(function(m){
+      tmp_parent_seq<-as.character(full_tr_merge[node.seq==m,]$parent.seq)
+      full_tr_merge[node.seq==tmp_parent_seq,]$"x"
     },
     mc.cores = mc.cores) %>%
     unlist()
@@ -110,12 +110,11 @@ add_expr_2_one_tr<-function(expr_file,
     merge(epic_gene_expr_simple,epic_gene_expr_simple_celltime_freq,by="cell") %>% data.table()
   
   ##
+  
+  epic_gene_expr_simple<-epic_gene_expr_simple[,time_rank_in_cell:=rank(time),by=cell]
+  
 
-  epic_gene_expr_simple<-epic_gene_expr_simple %>% group_by(cell) %>% mutate(time_rank_in_cell=rank(time))
-
-  #epic_gene_expr_simple<- epic_gene_expr_simple %>% group_by(cell) %>% mutate(time_rank_in_cell=rank(time))
-                                                   
-  print(epic_gene_expr$time_rank_in_cell)
+  print(epic_gene_expr_simple$time_rank_in_cell)
   
   epic_gene_expr_simple<-mutate(epic_gene_expr_simple,seg_x_start=((time_rank_in_cell-1)/ time_freq)*(node.x-parent.x)+parent.x)
   
@@ -138,10 +137,9 @@ add_expr_2_one_tr<-function(expr_file,
     unlist()
   
   
-  epic_gene_expr_simple$scale_blot<-with(epic_gene_expr_simple,scale(blot))
+  epic_gene_expr_simple$scale_blot<-scale(epic_gene_expr_simple$blot)
   
-  epic_gene_expr_simple<-data.frame(node=epic_gene_expr_simple$node.x,epic_gene_expr_simple)
-  
+
   EPIC_colors_gradient<-colors_gradient
   
   ggtr_anotation<-full_tr2[[paste0("gg",SorT)]]+
@@ -154,6 +152,7 @@ add_expr_2_one_tr<-function(expr_file,
     ),
     linetype="solid",
     size=expr_size,
+    alpha=expr_alpha,
     data=epic_gene_expr_simple %>% mutate(group="1"))+
     scale_color_gradientn(colors =EPIC_colors_gradient)+
     geom_tippoint(size=tip_size,aes(fill=I(colorlabel)),shape=21,color="NA")

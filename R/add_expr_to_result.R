@@ -67,19 +67,19 @@ add_expr_to_result<-function(expr_file,
     
     
     
-    #   think about the args passing to ggtree_result
-    #  environment(ggtree_result)=environment()
+    # think about the args passing to ggtree_result
+    # environment(ggtree_result)=environment()
     
     
     
     
    
     
-    full_tr2<- ggtree_result2(full_tr,
-                                     isprint = F,
-                                     branch_size=branch_size,
-                                     tip_size=tip_size,
-                                     tiplab_size=tiplab_size)
+    full_tr2<- ggtree_result(full_tr,
+                             isprint = F,
+                             branch_size=branch_size,
+                             tip_size=tip_size,
+                             tiplab_size=tiplab_size)
     
     full_tr_nodes_order<-
       full_tr[[paste0("tree",SorT)]]$nodes_order %>% 

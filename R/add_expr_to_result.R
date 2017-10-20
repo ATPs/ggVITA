@@ -61,8 +61,8 @@ add_expr_to_result<-function(expr_file,
     
     #result.nb<-get(result.nb,parent.frame())
     
-    epic_gene_expr_simple<-get(epic_gene_expr_simple,parent.frame())
-    
+  
+
     full_tr<-fun_alml_readin2$result_list[[result.nb2]]
     
     

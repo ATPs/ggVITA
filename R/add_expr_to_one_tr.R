@@ -27,7 +27,6 @@ add_expr_2_one_tr<-function(expr_file,
   
   epic_gene_expr_simple<-data.frame(epic_gene_expr)[,col_names] %>% data.table()
   
-  epic_gene_expr_simpe$time_rank_in_cell<-epic_gene_expr_simple[,rank(time),by=cell]$V1
   
   
   full_tr<-fun_alml_readin$result_list[[result.nb]]  
@@ -103,9 +102,11 @@ add_expr_2_one_tr<-function(expr_file,
   
   
  
-  
+  epic_gene_expr_simpe$time_rank_in_cell<-epic_gene_expr_simple[,rank(as.numeric(time)),by=cell]$V1
 
+  epic_gene_expr_simple$node.x<-as.numeric(epic_gene_expr_simple$node.x)
   
+  epic_gene_expr_simple$parent.x<-as.numeric(epic_gene_expr_simple$parent.x)
   
   epic_gene_expr_simple<-mutate(epic_gene_expr_simple,seg_x_start=((time_rank_in_cell-1)/ time_freq)*(node.x-parent.x)+parent.x)
   

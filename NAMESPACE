@@ -4,6 +4,6 @@ import(data.table)
 import(rlist)
 import(ggtree)
 import(pipeR)
-import(magritta)
+import(magrittr)
 export(add_expr_to_result)
 

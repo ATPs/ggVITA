@@ -27,7 +27,7 @@ add_expr_2_one_tr<-function(expr_file,
   
   col_names<-c("cell","time","blot","Lineage")
   
-  epic_gene_expr_simple<-epic_gene_expr[,col_names]
+  epic_gene_expr_simple<-epic_gene_expr[,list(cell,time,blot,Lineage)]
   
   
   
@@ -96,7 +96,7 @@ add_expr_2_one_tr<-function(expr_file,
   
   
   epic_gene_expr_simple<-
-    merge(epic_gene_expr_simple,epic_gene_expr_simple_celltime_freq,by="cell")
+    merge(epic_gene_expr_simple,epic_gene_expr_simple_celltime_freq,by="cell")%>%data.table()
   
   ##
   
@@ -130,8 +130,10 @@ add_expr_2_one_tr<-function(expr_file,
     },mc.cores = mc.cores) %>% 
     unlist()
   
+  epic_gene_expr_simple<-epic_gene_expr_simple%>%as.data.frame()%>%data.table()
   
-  epic_gene_expr_simple$scale_blot<-scale(epic_gene_expr_simple$blot)
+  
+  epic_gene_expr_simple<-epic_gene_expr_simple[,scale_blot:=scale(blot)]
   
 
   

@@ -3,5 +3,7 @@ exportPattern("^[^\\.]")
 import(data.table)
 import(rlist)
 import(ggtree)
+import(pipeR)
+import(magritta)
 export(add_expr_to_result)
 

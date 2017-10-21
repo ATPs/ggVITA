@@ -3,3 +3,5 @@ exportPattern("^[^\\.]")
 import(data.table)
 import(rlist)
 import(ggtree)
+export(add_expr_to_result)
+

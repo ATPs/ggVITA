@@ -77,7 +77,7 @@ LN_to_Bin<- function(the_LN_vec) {
   #########
  
    the_true_prefix <- c(
-    "Za",
+    "Za", #"AB"
     "Za",
     "Zaprppppapa",
     "Zppa",

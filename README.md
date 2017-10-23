@@ -10,7 +10,7 @@ It can add expression levels of genes from EPIC (http://epic.gs.washington.edu/)
 
 ## Installation
 install.packages("devtools")  
-intall_github("helloicyvodka/ggVITA")  
+install_github("helloicyvodka/ggVITA")  
 library(ggVITA)  
 
 or  

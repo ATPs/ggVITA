@@ -9,12 +9,12 @@ It can add expression levels of genes from EPIC (http://epic.gs.washington.edu/)
 
 
 ## Installation
-install.packages("devtools")
-intall_github("helloicyvodka/ggVITA")
-library(ggVITA)
+install.packages("devtools")  
+intall_github("helloicyvodka/ggVITA")  
+library(ggVITA)  
 
-or
-Linux shell $ git clone "http://...."
-R > load_all(the_file_cloned_to)
+or  
+Linux shell $ git clone "http://...."  
+R > load_all(the_file_cloned_to)  
 
-If there is any problem, welcome to email me ~ 
+If there is any problem, welcome to email me ~   

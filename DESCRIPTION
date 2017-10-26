@@ -3,9 +3,9 @@ Title: an R package for visualization and annotation of tree alignment with data
 Version: 0.0.0.9000
 Authors@R: person("Meng", "Yuan", email = "dilimou26@gmail.com", role = c("aut", "cre"))
 Description: 'ggVITA' extends the 'ggplot2' and 'ggtree' plotting system.This package is for visualizing results calculated by the tree blasting algorithms which is developed by Pro.Yang Jianrong,SYSU. Thanks for the ggtree package,the ggplot2 package and theirs authors:(1)ggplot2: Hadley and etc.(2) Guangchuang Yu, David Smith, Huachen Zhu, Yi Guan, Tommy Tsan-Yuk Lam. ggtree: an R package for visualization and annotation of phylogenetic trees with their covariates and other associated data. Methods in Ecology and Evolution 2017, 8(1):28-36, doi:10.1111/2041-210X.12628
-Depends: R (>= 3.3.2),ggplot2 (>= 2.2.0),dplyr,treeio,ggtree,data.table,rlist,pipeR
+Depends: R (>= 3.3.2),ggplot2 (>= 2.2.0)
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true  
-Imports:ape,grDevices,grid,magrittr,methods,rvcheck,scales,tidyr,utils,parallel
+Imports:ape,grDevices,grid,magrittr,methods,rvcheck,scales,tidyr,utils,parallel,dplyr,treeio,ggtree,data.table,rlist,pipeR
 Suggests:knitr (>= 0.1.0)
